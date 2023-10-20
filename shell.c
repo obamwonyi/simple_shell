@@ -1,50 +1,45 @@
 #include "shell.h"
 
 /**
- * main - main function for entering the shell process
- * @argc: input parameters count
- * @argv: input parameters
- * @envp: holds preview environment variable
- * Return: int
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
+ *
+ * Return: 0 on success, 1 on error
  */
-int main(int argc, char *argv[], char *envp[])
+int main(int ac, char **av)
 {
-	char *input = NULL;
-	size_t input_size = 0;
-	int interactive = isatty(STDIN_FILENO);
-	char *program_name = argv[0];
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-	if (argc > 1)
+	asm ("mov %1, %0\n\t"
+		"add $3, %0"
+		: "=r" (fd)
+		: "r" (fd));
+
+	if (ac == 2)
 	{
-		FILE *file = fopen(argv[1], "r");
-
-		if (!file)
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			perror("Error opening file");
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
+			{
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
+			}
 			return (EXIT_FAILURE);
 		}
-		while (getline(&input, &input_size, file) != -1)
-		{
-			input[strcspn(input, "\n")] = '\0';
-			execute_command(input, envp, program_name);
-		}
-		fclose(file);
+		info->readfd = fd;
 	}
-	else
-	{
-		while (1)
-		{
-			if (interactive)
-				printf("%s$ ", program_name);
-			if (getline(&input, &input_size, stdin) == -1)
-				break;
-			if (strcmp(input, "exit\n") == 0)
-				break;
-			input[strcspn(input, "\n")] = '\0';
-			execute_command(input, envp, program_name);
-		}
-	}
-
-	free(input);
-	return (0);
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }
+
