@@ -23,7 +23,7 @@ void execute_child(char *command, char *envp[])
 
 	execve(args[0], args, envp);
 
-	fprintf(stderr, "./hsh: %d: %s: not found\n", getpid(), args[0]);
+	fprintf(stderr, "./hsh: No such file or directory\n");
 	exit(EXIT_FAILURE);
 }
 
