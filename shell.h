@@ -15,8 +15,8 @@
 
 int main(int argc, char *argv[], char *envp[]);
 
-void execute_command(char *command, char *envp[]);
+void execute_command(char *command, char *envp[], char *program_name);
 
-void execute_child(char *command, char *envp[]);
+void execute_child(char *command, char *envp[], char *program_name);
 
 #endif

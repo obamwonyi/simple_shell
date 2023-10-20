@@ -6,7 +6,7 @@
  * @envp: environment variable
  * Return: none
  */
-void execute_child(char *command, char *envp[])
+void execute_child(char *command, char *envp[], char *program_name)
 {
 	char *args[MAX_ARG_SIZE];
 	char *token = strtok(command, DELIMITER);
@@ -23,7 +23,7 @@ void execute_child(char *command, char *envp[])
 
 	execve(args[0], args, envp);
 
-	fprintf(stderr, "./hsh: No such file or directory\n");
+	fprintf(stderr, "%s: %d: %s: not found\n", program_name, getpid(), args[0]);
 	exit(EXIT_FAILURE);
 }
 

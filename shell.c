@@ -12,7 +12,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *input = NULL;
 	size_t input_size = 0;
 	int interactive = isatty(STDIN_FILENO);
-
+	char *program_name = argv[0];
 
 	if (argc > 1)
 	{
@@ -23,13 +23,11 @@ int main(int argc, char *argv[], char *envp[])
 			perror("Error opening file");
 			return (EXIT_FAILURE);
 		}
-
 		while (getline(&input, &input_size, file) != -1)
 		{
 			input[strcspn(input, "\n")] = '\0';
-			execute_command(input, envp);
+			execute_command(input, envp, program_name);
 		}
-
 		fclose(file);
 	}
 	else
@@ -37,16 +35,13 @@ int main(int argc, char *argv[], char *envp[])
 		while (1)
 		{
 			if (interactive)
-				printf("($) ");
-
+				printf("%s$ ", program_name);
 			if (getline(&input, &input_size, stdin) == -1)
 				break;
-
 			if (strcmp(input, "exit\n") == 0)
 				break;
-
 			input[strcspn(input, "\n")] = '\0';
-			execute_command(input, envp);
+			execute_command(input, envp, program_name);
 		}
 	}
 
