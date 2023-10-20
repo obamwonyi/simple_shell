@@ -4,9 +4,10 @@
  * main - main function for entering the shell process
  * @argc: input parameters count
  * @argv: input parameters
+ * @envp: holds preview environment variable
  * Return: int
  */
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp[])
 {
 	char input[MAX_INPUT_SIZE];
 	int interactive = isatty(STDIN_FILENO);
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
 		while (fgets(input, MAX_INPUT_SIZE, file))
 		{
 			input[strcspn(input, "\n")] = '\0';
-			execute_command(input);
+			execute_command(input, envp);
 		}
 
 		fclose(file);
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
 		while (1)
 		{
 			if (interactive)
-				printf("@Destiny$ ");
+				printf("($) ");
 
 			if (!fgets(input, MAX_INPUT_SIZE, stdin))
 				break;
@@ -42,10 +43,9 @@ int main(int argc, char *argv[])
 				break;
 
 			input[strcspn(input, "\n")] = '\0';
-			execute_command(input);
+			execute_command(input, envp);
 		}
 	}
 
 	return (0);
 }
-

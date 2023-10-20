@@ -3,9 +3,10 @@
 /**
  * execute_command - handles the command execution
  * @command: string or char that respresent the command to be executed
+ * @envp: environment variable
  * Return: None
  */
-void execute_command(char *command)
+void execute_command(char *command, char *envp[])
 {
 	pid_t pid;
 	int status;
@@ -13,7 +14,7 @@ void execute_command(char *command)
 	pid = fork();
 
 	if (pid == 0)
-		execute_child(command);
+		execute_child(command, envp);
 	else if (pid < 0)
 		perror("Fork failed");
 	else

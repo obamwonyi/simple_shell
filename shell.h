@@ -11,10 +11,14 @@
 
 #define MAX_INPUT_SIZE 1024
 
-int main(int argc, char *argv[]);
+#define MAX_ARG_SIZE 64
 
-void execute_command(char *command);
+#define DELIMITER " \n\t"
 
-void execute_child(char *command);
+int main(int argc, char *argv[], char *envp[]);
+
+void execute_command(char *command, char *envp[]);
+
+void execute_child(char *command, char *envp[]);
 
 #endif
