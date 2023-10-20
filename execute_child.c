@@ -4,6 +4,7 @@
  * execute_child - responsible for handling child command
  * @command: the command passed as char / string
  * @envp: environment variable
+ * @program_name: name of the program
  * Return: none
  */
 void execute_child(char *command, char *envp[], char *program_name)
