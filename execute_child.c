@@ -23,7 +23,7 @@ void execute_child(char *command, char *envp[])
 
 	execve(args[0], args, envp);
 
-	perror("Error");
+	fprintf(stderr, "./hsh: %d: %s: not found\n", getpid(), args[0]);
 	exit(EXIT_FAILURE);
 }
 
