@@ -43,7 +43,7 @@ int main(int argc, char *argv[], char *envp[])
 				break;
 
 			if (strcmp(input, "exit\n") == 0)
-				return (0);
+				break;
 
 			input[strcspn(input, "\n")] = '\0';
 			execute_command(input, envp);
