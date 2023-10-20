@@ -9,8 +9,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#define MAX_INPUT_SIZE 1024
-
 #define MAX_ARG_SIZE 64
 
 #define DELIMITER " \n\t"

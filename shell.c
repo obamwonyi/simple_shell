@@ -9,8 +9,10 @@
  */
 int main(int argc, char *argv[], char *envp[])
 {
-	char input[MAX_INPUT_SIZE];
+	char *input = NULL;
+	size_t input_size = 0;
 	int interactive = isatty(STDIN_FILENO);
+
 
 	if (argc > 1)
 	{
@@ -21,7 +23,8 @@ int main(int argc, char *argv[], char *envp[])
 			perror("Error opening file");
 			return (EXIT_FAILURE);
 		}
-		while (fgets(input, MAX_INPUT_SIZE, file))
+
+		while (getline(&input, &input_size, file) != -1)
 		{
 			input[strcspn(input, "\n")] = '\0';
 			execute_command(input, envp);
@@ -36,7 +39,7 @@ int main(int argc, char *argv[], char *envp[])
 			if (interactive)
 				printf("($) ");
 
-			if (!fgets(input, MAX_INPUT_SIZE, stdin))
+			if (getline(&input, &input_size, stdin) == -1)
 				break;
 
 			if (strcmp(input, "exit\n") == 0)
@@ -47,5 +50,6 @@ int main(int argc, char *argv[], char *envp[])
 		}
 	}
 
+	free(input);
 	return (0);
 }

@@ -8,7 +8,7 @@
  */
 void execute_child(char *command, char *envp[])
 {
-	char *args[MAX_INPUT_SIZE];
+	char *args[MAX_ARG_SIZE];
 	char *token = strtok(command, DELIMITER);
 
 	int i = 0;
