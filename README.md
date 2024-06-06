@@ -2,7 +2,7 @@
 
 ### Compile code
 ```bash
-gcc -Wall -Wextra -Werror -pedantic -o shell
+gcc -Wall -Wextra -Werror -pedantic -o shell *.c
 ```
 
 ### Run code
